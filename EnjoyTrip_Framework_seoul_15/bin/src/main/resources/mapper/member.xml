@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.member.model.mapper.MemberMapper">
+
+	<resultMap type="memberDto" id="member">
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_password" property="userPwd"/>
+		<result column="email_id" property="emailId"/>
+		<result column="email_domain" property="emailDomain"/>
+		<result column="join_date" property="joinDate"/>
+		<result column="file_idx" property="fileIdx"/>
+		<result column="token" property="refreshToken"/>
+	</resultMap>
+	
+	<resultMap type="fileInfoDto" id="file">
+		<result column="save_folder" property="saveFolder"/>	
+		<result column="original_file" property="originalFile"/>
+	</resultMap>
+	
+	<resultMap type="profileInfoDto" id="profile">
+		<result column="profile_idx" property="profileIdx"/>
+		<result column="save_folder" property="saveFolder"/>
+		<result column="original_file" property="originalFile"/>
+	</resultMap>
+
+	<select id="idCheck" parameterType="String" resultType="int">
+		select count(user_id)
+		from members
+		where user_id = #{userId}
+	</select>
+
+	<select id="login" parameterType="map" resultMap="member">
+		select user_id, user_name, token
+		from members
+		where user_id = #{userId} and user_password = #{userPwd}
+	</select>
+	
+	<select id="userInfo" parameterType="string" resultMap="member">
+		select *
+		from members
+		where user_id = #{userId}
+	</select>
+	
+	<select id="otherUserInfo" parameterType="string" resultMap="member">
+		select user_id, user_name,email_id, email_domain, join_date, file_idx, tati
+		from members
+		where user_id = #{userId}
+	</select>
+	
+	<select id="getFilePath" parameterType="string" resultMap="file">
+		select save_folder, original_file
+		from file_info
+		where idx = #{idx}
+	</select>
+	
+	<select id="getProfileFilePath" parameterType="string" resultMap="profile">
+		select save_folder, original_file
+		from profile_info
+		where profile_idx = #{profileIdx}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update members
+		set token = #{token}
+		where user_id = #{userId}
+	</update>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from members
+		where user_id = #{userId}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update members
+		set token = #{token, jdbcType=VARCHAR}
+		where user_id = #{userId}
+	</update>
+	
+	<insert id="joinMember" parameterType="memberDto">
+		insert into members (user_name, user_id, user_password, email_id, email_domain, join_date)
+		values (#{userName}, #{userId}, #{userPwd}, #{emailId}, #{emailDomain}, now())
+		
+	</insert>
+	
+	<select id="getPassword" parameterType = "memberDto" resultType="String">
+	select user_password
+	from members
+	where user_id=#{userId} and user_name=#{userName} and email_id=#{emailId} and email_domain=#{emailDomain}
+	</select>
+	
+	<insert id="registProfile" parameterType="memberDto">
+		insert into profile_info (user_id)
+		values (#{userId})
+	</insert>
+	
+	<update id="updateProfile" parameterType="profileInfoDto">
+		update profile_info 
+		set save_folder=#{saveFolder}, original_file=#{originalFile}, save_file=#{saveFile}
+		where user_id=#{userId}
+	</update>
+	
+	<select id="getProfileIdx" parameterType="string">
+		select profile_idx
+		from profile_info
+		where user_id=#{userId}
+	</select>
+	
+	<delete id="deleteProfile" parameterType="string">
+		delete from profile_info
+		where user_id=#{userId}
+	</delete>
+	
+	<update id="modifyMember" parameterType="memberDto">
+		update members
+		<trim prefix="set" suffixOverrides=",">
+			<if test="userName != null">user_name = #{userName},</if>
+			<if test="userPwd != null">user_password = #{userPwd},</if>
+			<if test="emailId != null">email_id = #{emailId},</if>
+			<if test="emailDomain != null">email_domain = #{emailDomain},</if>
+			<if test="fileIdx != null">file_idx = #{fileIdx},</if>
+			<if test="tati != null">tati=#{tati},</if>
+		</trim>
+		where user_id = #{userId}
+	</update>
+
+	
+	<!-- ADMIN -->
+	<select id="listMember" resultMap="member">
+		select user_name, user_id, user_password, email_id, email_domain, join_date
+		from members
+		order by join_date
+	</select>
+	
+	<select id="getMember" parameterType="string" resultMap="member">
+		select user_id, user_name, user_password, email_id, email_domain, join_date
+		from members
+		where user_id = #{userId}
+	</select>
+	
+	<update id="updateMember" parameterType="memberDto">
+		update members
+		<trim prefix="set" suffixOverrides=",">
+			<if test="userPwd != null">user_password = #{userPwd},</if>
+			<if test="emailId != null">email_id = #{emailId},</if>
+			<if test="emailDomain != null">email_domain = #{emailDomain},</if>
+		</trim>
+		where user_id = #{userId}
+	</update>
+	
+	<delete id="deleteMember" parameterType="String">
+		delete from members
+		where user_id = #{userId}
+	</delete>
+	
+	<!-- Friend Search -->
+	<select id="searchFriend" parameterType="string" resultType='string'>
+	SELECT user_id
+	FROM members
+	WHERE user_id like '%${keyword}%'
+	</select>
+	
+	<!-- follower, following -->
+	<select id="getFollower" parameterType="string" resultType='string'>
+	SELECT follower_id
+	FROM follow
+	WHERE following_id = #{following_id}
+	</select>
+	
+	<select id="getFollowing" parameterType="string" resultType='string'>
+	SELECT following_id
+	FROM follow
+	WHERE follower_id = #{follower_id}
+	</select>
+	
+	<select id="getFollowerWithdraw" parameterType="string" resultType='string'>
+	SELECT follower_id
+	FROM follow
+	WHERE following_id = #{follower_id}
+	</select>
+	
+	<insert id="addFollow" parameterType="map">
+	insert into follow(follower_id, following_id) values(#{follower_id}, #{following_id})
+	</insert>
+	
+	
+	<delete id="deleteFollow" parameterType="String">
+	delete from follow
+	where follower_id=#{followerId} and following_id= #{followingId}
+	</delete>
+	
+	
+	<select id="checkFollowing" parameterType="string" resultType='string'>
+	SELECT follower_id, following_id
+	FROM follow
+	WHERE follower_id = #{follower_id} and following_id = #{following_id}
+	</select>
+	
+	
+</mapper>

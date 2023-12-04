@@ -1,0 +1,90 @@
+a {
+  text-decoration: none;
+  color: black;
+}
+li {
+  list-style: none;
+}
+footer {
+  background-color: #6998ab;
+  height: 300px;
+  margin-top: 100px;
+}
+.headertitle {
+  font-weight: 700;
+  color: white;
+  font-size: 28px;
+  padding: 20px 0;
+}
+.headerli {
+  margin: 0 16px;
+}
+.headerli::after {
+  content: "";
+  display: block;
+  margin-top: 2px;
+  width: 0;
+  visibility: hidden;
+  border: 1px solid white;
+  transition: width 0.6s ease;
+}
+.headerli > a {
+  color: #e6e6e6;
+}
+
+.headerli:hover::after {
+  width: 100%;
+  border: 1px solid white;
+  visibility: visible;
+}
+
+.ImgSection {
+  display: block;
+}
+
+.topad_wrap {
+  display: flex;
+  justify-content: space-around;
+  background-color: #6998ab;
+  height: 400px;
+}
+.topad_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+}
+
+.topad_content > h2 {
+  margin-bottom: 30px;
+  font-size: 40px;
+}
+.topad_content > p {
+  font-size: 20px;
+  font-weight: 500;
+}
+.topad_imgwrap > img {
+  width: 500px;
+  height: 300px;
+}
+.btntheme {
+  background-color: #6998ab;
+  color: white;
+}
+.btntheme:hover {
+  border: 1px solid #6998ab;
+  color: #6998ab;
+}
+
+.maincard {
+  border: 2px solid #6998ab;
+}
+.maincard > .card-body a {
+  float: right;
+}
+
+.total_wrap {
+  border: 2px solid #6998ab;
+  border-radius: 15px;
+  padding: 20px;
+}

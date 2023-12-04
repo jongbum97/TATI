@@ -1,0 +1,28 @@
+.search_travel_title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #6998ab;
+  margin: 0 60px;
+  padding: 20px 0;
+  font-weight: 700;
+  color: white;
+  font-size: 20px;
+  border-radius: 10px;
+}
+.search_travel_title > p {
+  margin: 0 auto;
+}
+
+.search_travel_input {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+th {
+  padding: 10px 0;
+}
+
+#trip-list > tr > td {
+  vertical-align: middle;
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.attraction.model.mapper.AttractionMapper">
+
+
+	<select id="getAttractions" parameterType="int" resultType="attractionDto">
+		select *
+		from attraction_info i, attraction_description d
+		where i.content_id = d.content_id and i.first_image != ''
+		limit #{k}, 10;
+	</select>
+	
+	<select id="getDetail" parameterType="int" resultType="attractionDto">
+		select *
+		from attraction_info i, attraction_description d
+		where i.content_id = d.content_id and i.content_id = #{id}
+	</select>
+	
+	<select id="getRank" resultType="attractionDto">
+		select *
+		from attraction_info i, attraction_description d
+		where i.content_id = d.content_id and i.first_image != ''
+		order by CAST(mlevel AS UNSIGNED) desc
+		limit 20
+	</select>
+	
+	<insert id="likeAttraction" parameterType="attractionLikeDto">
+		insert into attraction_like(user_id, content_id)
+		values(#{userId}, #{contentId})
+	</insert>
+	
+	<delete id="likeCancelAttraction" parameterType="String">
+		delete from attraction_like
+		where user_id=#{userId} and content_id=#{contentId}
+	</delete>
+	
+	<select id="getLikeList" parameterType="string" resultType="string">
+		select content_id
+		from attraction_like
+		where user_id=#{userId}
+	</select>
+	
+	<select id="getRandom" parameterType="int" resultType="attractionDto">
+		select *
+		from attraction_info i, attraction_description d
+		where i.content_id = d.content_id and i.first_image != ''
+		limit #{k}, 10
+	</select>
+	
+	<update id="updateAttractionLike" parameterType="string">
+		update attraction_info
+		set mlevel = mlevel + 1
+		where content_id = #{contentId}
+	</update>
+	
+	<update id="updateAttractionLikeCancel" parameterType="string">
+		update attraction_info
+		set mlevel = mlevel - 1
+		where content_id = #{contentId}
+	</update>
+	
+</mapper>
