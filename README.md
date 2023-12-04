@@ -1,7 +1,7 @@
 # 📖 EnjoyTrip_Final_Seoul_15 TATI
 
 ![TATI메인페이지](https://github.com/jongbum97/TATI/blob/main/EnjoyTrip_FrontEnd_seoul_15/src/assets/images/main.png)
-[## 사이트 구경하기](http://jongbum.site:8001)
+[TATI 링크](http://jongbum.site:8001)
 <br>
 
 ## 프로젝트 소개
