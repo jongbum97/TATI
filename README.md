@@ -1,6 +1,6 @@
 # 📖 EnjoyTrip_Final_Seoul_15 TATI
 
-![TATI메인페이지][https://github.com/jongbum97/TATI/blob/main/EnjoyTrip_FrontEnd_seoul_15/src/assets/images/main.png]
+![TATI메인페이지](https://github.com/jongbum97/TATI/blob/main/EnjoyTrip_FrontEnd_seoul_15/src/assets/images/main.png)
 
 <br>
 
